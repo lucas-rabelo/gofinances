@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { RFValue, RFPercentage } from 'react-native-responsive-fontsize';
+import { RFValue } from 'react-native-responsive-fontsize';
 import { Feather } from '@expo/vector-icons';
 
 interface TransactionProps {
