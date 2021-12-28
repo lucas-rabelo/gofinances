@@ -6,7 +6,7 @@ import {
     Icon
 } from './styles';
 
-type Props = {
+interface Props {
     title: string;
     onPress: () => void;
 }

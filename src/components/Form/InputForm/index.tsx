@@ -4,16 +4,18 @@ import { TextInputProps } from 'react-native';
 
 import { Input } from '../Input';
 
-import { Container } from './styles';
+import { Container, Error } from './styles';
 
 type Props = TextInputProps & {
     control: Control;
     name: string;
+    error: string;
 }
 
-export function InputForm({ control, name, ...rest }: Props) {
+export function InputForm({ control, name, error, ...rest }: Props) {
     return (
         <Container>
+            {error && <Error>{error}</Error>}
             <Controller
                 control={control}
                 render={({ field: { onChange, value } }) => (

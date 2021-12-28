@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import {
     Keyboard,
     Modal,
     TouchableWithoutFeedback,
     Alert
 } from 'react-native';
+import * as Yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+
+import { useForm } from 'react-hook-form';
 
 import { InputForm } from '../../components/Form/InputForm';
 import { Button } from '../../components/Form/Button';
@@ -28,6 +31,11 @@ type FormData = {
     amount: string;
 }
 
+const schema = Yup.object().shape({
+    name: Yup.string().required('O nome é obrigatório'),
+    amount: Yup.number().typeError('Informe um valor numérico').positive('O valor não pode ser negativo').required('O valor é obrigatório')
+});
+
 export function Register() {
 
     const [transactionType, setTransactionType] = useState('');
@@ -40,8 +48,11 @@ export function Register() {
 
     const {
         control,
-        handleSubmit
-    } = useForm();
+        handleSubmit,
+        formState: { errors }
+    } = useForm({
+        resolver: yupResolver(schema)
+    });
 
     function handleTransactionTypeSelect(type: 'up' | 'down') {
         setTransactionType(type);
@@ -56,7 +67,6 @@ export function Register() {
     }
 
     function handleRegister(form: FormData) {
-
         if (!transactionType) {
             Alert.alert('Aviso', 'Selecione o tipo da transação');
             return;
@@ -91,13 +101,15 @@ export function Register() {
                         <InputForm
                             control={control}
                             name="name"
+                            error={errors.name && errors.name.message}
                             placeholder="Nome"
                             autoCapitalize="sentences"
                             autoCorrect={false}
                         />
                         <InputForm
-                            name="amount"
                             control={control}
+                            name="amount"
+                            error={errors.amount && errors.amount.message}
                             placeholder="Preço"
                             keyboardType="numeric"
 
